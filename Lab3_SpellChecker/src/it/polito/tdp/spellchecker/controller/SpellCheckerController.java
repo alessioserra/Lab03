@@ -49,16 +49,28 @@ public class SpellCheckerController {
     	this.model=model;
     	//Definisco il comboBox
     	comboBox.getItems().addAll("English","Italian");
+    	btnClear.setDisable(true);
     }
 
+    
     @FXML
     void doClearText(ActionEvent event) {
+    	txtOut.clear();
+    	txtIn.clear();
 
     }
 
     
     @FXML
     void doSpellCheck(ActionEvent event) {
+    	
+    	double t1 = System.nanoTime();
+    	
+    	btnClear.setDisable(false);
+    	
+    	int contatore=0;
+    	
+    	txtOut.clear();
     	
     	model.loadDictionary(comboBox.getValue());
     	
@@ -79,16 +91,16 @@ public class SpellCheckerController {
     	   if (r.isCorretta()==false) output.add(r.getParola());
        }
        
-       int contatore=0;
-       
        //Output della TextArea
        for (String o : output) {
-    	   txtOut.appendText(o);
+    	   txtOut.appendText(o+"\n");
     	   contatore++;
        }
        
-       errors.setText("ci sono " + contatore + "errori!");
+       errors.setText("The text contains " + contatore + " errors");
         
+       double t2=System.nanoTime();
+       time.setText("Spell Check completed in: "+(t2-t1)+" seconds");
     }
 
     @FXML
