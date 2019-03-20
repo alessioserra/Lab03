@@ -1,9 +1,11 @@
 package it.polito.tdp.spellchecker.controller;
 
 import java.net.URL;
+import java.util.*;
 import java.util.ResourceBundle;
 
 import it.polito.tdp.spellchecker.model.Dictionary;
+import it.polito.tdp.spellchecker.model.RichWord;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -23,7 +25,7 @@ public class SpellCheckerController {
     private URL location;
 
     @FXML
-    private ComboBox<?> comboBox;
+    private ComboBox<String> comboBox;
 
     @FXML
     private TextArea txtIn;
@@ -45,6 +47,8 @@ public class SpellCheckerController {
     
     public void setModel(Dictionary model) {
     	this.model=model;
+    	//Definisco il comboBox
+    	comboBox.getItems().addAll("English","Italian");
     }
 
     @FXML
@@ -52,9 +56,39 @@ public class SpellCheckerController {
 
     }
 
+    
     @FXML
     void doSpellCheck(ActionEvent event) {
-
+    	
+    	model.loadDictionary(comboBox.getValue());
+    	
+    	LinkedList<String> stringa = new LinkedList<String>();
+    	String input =txtIn.getText().replaceAll("[.,\\/#!$%\\^&\\*;:{}=\\-_`~()\\[\\]\"]", " ");
+    	
+        String array[]=input.split(" ");
+        
+        for(int i=0; i<array.length;i++) {
+        	stringa.add(array[i]);
+        }
+        
+       List<RichWord> risultato = model.spellCheckText(stringa);
+       
+       List<String> output = new LinkedList<String>();
+       
+       for (RichWord r : risultato) {
+    	   if (r.isCorretta()==false) output.add(r.getParola());
+       }
+       
+       int contatore=0;
+       
+       //Output della TextArea
+       for (String o : output) {
+    	   txtOut.appendText(o);
+    	   contatore++;
+       }
+       
+       errors.setText("ci sono " + contatore + "errori!");
+        
     }
 
     @FXML

@@ -5,7 +5,7 @@ import java.util.*;
 
 public class Dictionary {
 
-	List<RichWord> dizionario;
+	List<String> dizionario = new LinkedList<String>();
 	
 	public void loadDictionary(String language) {
 		
@@ -16,7 +16,7 @@ public class Dictionary {
 			
 			while ((word = br.readLine())!=null) {
 				
-				//METODO
+				dizionario.add(word);
 				
 			}
 			br.close();
@@ -27,7 +27,15 @@ public class Dictionary {
 	
 	public List<RichWord> spellCheckText(List<String> inputTextList){
 		
-		return null;
+		List<RichWord> risultato = new LinkedList<RichWord>();
+		
+		for (String s : inputTextList) {
+			if (dizionario.contains(s)==true) {
+				risultato.add(new RichWord(s,true));	
+			}
+			else risultato.add(new RichWord(s,false));
+		}
+		return risultato;
 	}
 	
 }
