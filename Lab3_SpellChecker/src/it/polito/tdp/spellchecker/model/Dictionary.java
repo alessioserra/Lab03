@@ -38,4 +38,13 @@ public class Dictionary {
 		return risultato;
 	}
 	
+	public void pulisciDizionario() {
+		
+		List<String> temp = new LinkedList<String>();
+		
+		for (String s : dizionario) temp.add(s);
+		
+		dizionario.removeAll(temp);
+	}
+	
 }

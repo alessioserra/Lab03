@@ -49,15 +49,17 @@ public class SpellCheckerController {
     	this.model=model;
     	//Definisco il comboBox
     	comboBox.getItems().addAll("English","Italian");
+    	comboBox.setValue("English");
     	btnClear.setDisable(true);
+    	
     }
 
     
     @FXML
     void doClearText(ActionEvent event) {
+    	
     	txtOut.clear();
     	txtIn.clear();
-
     }
 
     
@@ -75,12 +77,12 @@ public class SpellCheckerController {
     	model.loadDictionary(comboBox.getValue());
     	
     	LinkedList<String> stringa = new LinkedList<String>();
-    	String input =txtIn.getText().replaceAll("[.,\\/#!$%\\^&\\*;:{}=\\-_`~()\\[\\]\"]", " ");
+    	String input =txtIn.getText().replaceAll("[.,\\/#!$%\\^&\\*;:{}=\\-_`~()\\[\\]\"]", "\\s+");
     	
         String array[]=input.split(" ");
         
         for(int i=0; i<array.length;i++) {
-        	stringa.add(array[i]);
+        	if(array[i].compareTo("")!=0) stringa.add(array[i]);
         }
         
        List<RichWord> risultato = model.spellCheckText(stringa);
